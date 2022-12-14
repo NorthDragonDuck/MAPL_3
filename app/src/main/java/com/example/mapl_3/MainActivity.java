@@ -1,5 +1,9 @@
 package com.example.mapl_3;
 
+
+
+
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -19,7 +23,9 @@ public class MainActivity extends AppCompatActivity {
             buttonOneX, buttonZero, buttonOne, buttonTwo,
             buttonThree, buttonFour, buttonFive,
             buttonSix, buttonSeven, buttonEight, buttonNine;
-    TextView textWindow, equationWindow;
+    @SuppressLint("StaticFieldLeak")
+    static TextView textWindow;
+    TextView equationWindow;
     double memoryValue =0.0 ;
 
 
@@ -67,23 +73,25 @@ public class MainActivity extends AppCompatActivity {
         equationWindow = findViewById(R.id.equationDisplay);
 
 //        add numbers
-        buttonOne.setOnClickListener(v -> textWindow.setText(textWindow.getText() + "1"));
-        buttonTwo.setOnClickListener(v -> textWindow.setText(textWindow.getText() + "2"));
-        buttonThree.setOnClickListener(v -> textWindow.setText(textWindow.getText() + "3"));
-        buttonFour.setOnClickListener(v -> textWindow.setText(textWindow.getText() + "4"));
-        buttonFive.setOnClickListener(v -> textWindow.setText(textWindow.getText() + "5"));
-        buttonSix.setOnClickListener(v -> textWindow.setText(textWindow.getText() + "6"));
-        buttonSeven.setOnClickListener(v -> textWindow.setText(textWindow.getText() + "7"));
-        buttonEight.setOnClickListener(v -> textWindow.setText(textWindow.getText() + "8"));
-        buttonNine.setOnClickListener(v -> textWindow.setText(textWindow.getText() + "9"));
-        buttonZero.setOnClickListener(v -> textWindow.setText(textWindow.getText() + "0"));
+        buttonOne.setOnClickListener(v -> { infinityDelete(); textWindow.setText(textWindow.getText() + "1");});
+        buttonTwo.setOnClickListener(v -> { infinityDelete(); textWindow.setText(textWindow.getText() + "2");});
+        buttonThree.setOnClickListener(v -> { infinityDelete();  textWindow.setText(textWindow.getText() + "3");});
+        buttonFour.setOnClickListener(v -> { infinityDelete();  textWindow.setText(textWindow.getText() + "4");});
+        buttonFive.setOnClickListener(v -> { infinityDelete();  textWindow.setText(textWindow.getText() + "5");});
+        buttonSix.setOnClickListener(v -> { infinityDelete();  textWindow.setText(textWindow.getText() + "6");});
+        buttonSeven.setOnClickListener(v -> { infinityDelete();  textWindow.setText(textWindow.getText() + "7");});
+        buttonEight.setOnClickListener(v -> { infinityDelete();  textWindow.setText(textWindow.getText() + "8");});
+        buttonNine.setOnClickListener(v -> { infinityDelete();  textWindow.setText(textWindow.getText() + "9");});
+        buttonZero.setOnClickListener(v -> { infinityDelete();  textWindow.setText(textWindow.getText() + "0");});
 
-        buttonDot.setOnClickListener(v -> textWindow.setText(textWindow.getText() + "."));
+        buttonDot.setOnClickListener(v ->  { infinityDelete(); textWindow.setText(textWindow.getText() + ".");});
 //memory block
 //        clear
         buttonMC.setOnClickListener(v -> memoryValue = 0);
 //add memory
-        buttonMR.setOnClickListener(v -> { if (textWindow.getText().equals("")){ textWindow.setText(Double.toString(memoryValue));}
+        buttonMR.setOnClickListener(v -> {
+            infinityDelete();
+            if (textWindow.getText().equals("")){ textWindow.setText(Double.toString(memoryValue));}
             else{
             String value = textWindow.getText().toString();
             String checker = value.substring(value.length() - 1);
@@ -98,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
 //plus to memory
         buttonMP.setOnClickListener(v -> { if (textWindow.getText().equals("")){
-
+            infinityDelete();
             Toast.makeText(this, "You can not add nothing!", Toast.LENGTH_SHORT).show();
         }
         else{
@@ -109,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
         });
 //store new result
         buttonMS.setOnClickListener(v ->{
+            infinityDelete();
             if (textWindow.getText().equals("")){
 
                 Toast.makeText(this, "You can not store nothing!", Toast.LENGTH_SHORT).show();
@@ -122,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
 //memory minus
         buttonMM.setOnClickListener(v ->{
+            infinityDelete();
             if (textWindow.getText().equals("")) {
                 Toast.makeText(this, "You can not subtract nothing!", Toast.LENGTH_SHORT).show();
             }
@@ -134,11 +144,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 //        clear all
-        buttonC.setOnClickListener(v -> textWindow.setText(""));
+        buttonC.setOnClickListener(v -> {infinityDelete(); textWindow.setText("");});
 
 //        delete last number
         buttonCE.setOnClickListener(v -> {
-
+            infinityDelete();
             String value = textWindow.getText().toString();
             int fulfillment = value.length();
             if(fulfillment >0){
@@ -161,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
 //      arrow delete last char
 
         buttonArrow.setOnClickListener(v -> {
-
+            infinityDelete();
             String value = textWindow.getText().toString();
             int fulfillment = value.length();
             if(fulfillment >0){
@@ -173,15 +183,31 @@ public class MainActivity extends AppCompatActivity {
         });
 
 //        math operations
-        buttonPlus.setOnClickListener(v -> textWindow.setText(textWindow.getText()+"+"));
-        buttonMinus.setOnClickListener(v -> textWindow.setText(textWindow.getText()+"-"));
-        buttonMultiply.setOnClickListener(v -> textWindow.setText(textWindow.getText()+"*"));
-        buttonDivision.setOnClickListener(v -> textWindow.setText(textWindow.getText()+"/"));
-        buttonPercent.setOnClickListener(v -> textWindow.setText(textWindow.getText()+"%"));
-        buttonOneX.setOnClickListener(v -> textWindow.setText("1/"+"("+textWindow.getText()+")"));
+        buttonPlus.setOnClickListener(v -> { infinityDelete(); textWindow.setText(textWindow.getText()+"+");});
+        buttonMinus.setOnClickListener(v ->{infinityDelete(); textWindow.setText(textWindow.getText()+"-");});
+        buttonMultiply.setOnClickListener(v -> {infinityDelete(); textWindow.setText(textWindow.getText()+"*");});
+        buttonDivision.setOnClickListener(v -> {infinityDelete(); textWindow.setText(textWindow.getText()+"/");});
+        buttonPercent.setOnClickListener(v -> {infinityDelete(); textWindow.setText(textWindow.getText()+"%");});
+
+        buttonOneX.setOnClickListener(v ->{
+            infinityDelete();
+                String value = textWindow.getText().toString();
+        boolean errorChecker =checkSysError(value);
+
+        if (errorChecker) {
+            textWindow.setText("1/"+"("+value+")");
+        } else {
+            equationWindow.setText("Syntax Error! ");
+            Toast.makeText(this, "Try again)\n Please, enter clean mathematical expression before such operation!", Toast.LENGTH_SHORT).show();
+        }
+
+
+
+        });
 
 //        change sign
         buttonPlusMinus.setOnClickListener(v -> {
+            infinityDelete();
             if (textWindow.getText().equals("")) {
                 Toast.makeText(this, "No value for this operations!", Toast.LENGTH_SHORT).show();
             } else {
@@ -199,34 +225,92 @@ public class MainActivity extends AppCompatActivity {
 
 //        sqrt root
         buttonSqrt.setOnClickListener(v -> {
-            String value = null;
-            if (textWindow.getText().equals("")) {
+            infinityDelete();
+            String value = textWindow.getText().toString();
+            boolean errorChecker =checkSysError(value);
+            if (value.equals("")) {
                 Toast.makeText(this, "No value for sqrt operations!", Toast.LENGTH_SHORT).show();
-            } else {
-                value = textWindow.getText().toString();
+            } else if (errorChecker){
                 double result = eval(value);
                 double root = Math.sqrt(result);
                 textWindow.setText(String.valueOf(root));
+                equationWindow.setText("\u221a" + "(" + value +") = ");
             }
-            equationWindow.setText("\u221a" + "(" + value +") = ");
+            else {
+                equationWindow.setText("Syntax Error! ");
+                Toast.makeText(this, "Try C button or try again)\n Please, enter clean mathematical expression!", Toast.LENGTH_SHORT).show();
+            }
+
         });
 
 
 
 //equal
         buttonEqual.setOnClickListener(v -> {
-            if (textWindow.getText().equals("")){
-                Toast.makeText(this, "You enter nothing!", Toast.LENGTH_SHORT).show();
-            }      else
-            {
+            infinityDelete();
             String value = textWindow.getText().toString();
-            double result = eval(value);
-            textWindow.setText((String.valueOf(result)));
-            equationWindow.setText(value + "= ");}
-        });
+            boolean errorChecker =checkSysError(value);
 
+                if (errorChecker) {
+                    double result = eval(value);
+                    textWindow.setText((String.valueOf(result)));
+                    equationWindow.setText(value + "= ");
+                } else {
+                    equationWindow.setText("Syntax Error! ");
+                    Toast.makeText(this, "Try C button or try again)\n Please, enter clean mathematical expression!", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+        );}
+public static void infinityDelete(){
+        String value = textWindow.getText().toString();
+        if(value.equals("Infinity")){
+            textWindow.setText("");
+        }
 
     }
+    public static boolean checkSysError(final String str) {
+        boolean syntaxErrorChecker = false;
+        if (str.equals("")) {
+           System.out.println("Noting should happened!");
+        } else {
+            syntaxErrorChecker = true;
+            int c = 0;
+            for (int i = 0; i < str.length(); i++) {
+                c = c + 1;
+                char thisChar = str.charAt(i);
+
+                char nextChar;
+
+                if (i < c && c < str.length()) {
+                    nextChar = str.charAt(i + 1);
+
+
+                } else {
+                    nextChar = ' ';
+                }
+//good expression rules
+                //first char review
+                if (str.charAt(0) == '*' || str.charAt(0) == '%' || str.charAt(0) == '/' || str.charAt(0) == '.') {
+                    syntaxErrorChecker = false;
+
+                }
+                //last char review
+                if ((nextChar == ' ') && (thisChar == '/' || thisChar == '*' || thisChar == '%' || thisChar == '+' || thisChar == '-' || thisChar == ' ' || thisChar == '.')) {
+                    syntaxErrorChecker = false;
+
+                }
+                //double signs review
+                if ((thisChar == nextChar) && (nextChar == '/' || nextChar == '*' || nextChar == '%'  || nextChar == ' ' || nextChar == '.')) {
+                    syntaxErrorChecker = false;
+
+                }
+            }
+        }
+        return syntaxErrorChecker;
+    }
+
 
 // math operation function
     public static double eval(final String str) {
@@ -249,49 +333,46 @@ public class MainActivity extends AppCompatActivity {
 
             double parse() {
                 nextChar();
-                double x = parseExpression();
+                double x = parseTerm();
                 if (pos < str.length()) throw new RuntimeException("Unexpected: " + (char)ch);
                 return x;
             }
 
-
-            double parseExpression() {
-                double x = parseTerm();
-                for (;;) {
-                    if      (eat('+')) x += parseTerm();
-                    else if (eat('-')) x -= parseTerm();
-                    else return x;
-                }
-            }
 
             double parseTerm() {
                 double x = parseFactor();
                 for (;;) {
                     if      (eat('*')) x *= parseFactor();
                     else if (eat('/')) x /= parseFactor();
-                    else if (eat('%')) x %=parseFactor();
+                    else if (eat('%')) x %= parseFactor();
+                    else if (eat('+')) x += parseFactor();
+                    else if (eat('-')) x -= parseFactor();
                     else return x;
                 }
             }
 
+
+
             double parseFactor() {
-                if (eat('+')) return parseFactor();
-                if (eat('-')) return -parseFactor();
+
+               if (eat('+')) return parseFactor();
+               if (eat('-')) return -parseFactor();
+
 
                 double x;
                 int startPos = this.pos;
 
                 if (eat('(')) { // parentheses
-                    x = parseExpression();
+                    x = parseTerm();
                     eat(')');
-                } else if ((ch >= '0' && ch <= '9') || ch == '.') {
+                } else if (ch >= '0' && ch <= '9' || ch == '.') {
                     while ((ch >= '0' && ch <= '9') || ch == '.') nextChar();
                     x = Double.parseDouble(str.substring(startPos, this.pos));
                 } else {
                     throw new RuntimeException("Unexpected: " + (char)ch);
-                }
 
-                if (eat('^')) x = Math.pow(x, parseFactor());
+
+                }
 
                 return x;
             }
